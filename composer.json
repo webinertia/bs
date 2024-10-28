@@ -46,7 +46,7 @@
         "laminas/laminas-text": "^2.9.0",
         "laminas/laminas-validator": "^2.28",
         "laminas/laminas-view": "^2.25",
-        "phpunit/phpunit": "10.4.2",
+        "phpunit/phpunit": "11.4.3",
         "psalm/plugin-phpunit": "^0.18.4",
         "phpstan/phpstan": "1.10.40",
         "laminas/laminas-test": "^4.8",

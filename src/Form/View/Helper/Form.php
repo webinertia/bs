@@ -22,6 +22,19 @@ use function sprintf;
 class Form extends AbstractHelper
 {
     /**
+     * Attribute prefixes valid for all tags
+     *
+     * @var array
+     */
+    protected $validTagAttributePrefixes = [
+        'data-', // https://html.spec.whatwg.org/#attr-data-*
+        'aria-', // https://html.spec.whatwg.org/#attr-aria-*
+        // start htmx
+        'hx-',
+        'hx-swap-',
+        'x-',
+    ];
+    /**
      * Attributes valid for this tag (form)
      *
      * @var array
@@ -35,6 +48,13 @@ class Form extends AbstractHelper
         'name'           => true,
         'novalidate'     => true,
         'target'         => true,
+        // start htmx
+        'post'           => true,
+        'get'            => true,
+        'put'            => true,
+        'trigger'        => true,
+        'swap'           => true,
+        'sync'           => true,
     ];
 
     /**

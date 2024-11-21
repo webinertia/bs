@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Limatus\Form\View\Helper;
+
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerAwareTrait;
+use Laminas\Form\ElementInterface;
+use Laminas\Form\Exception;
+use Laminas\Form\View\Helper\FormInput;
+use Limatus\Events;
+use Limatus\Form;
+use Limatus\Form\View\Helper\Event\RenderEvent;
+
+use function sprintf;
+
+class FormInputDelegator extends FormInput implements EventManagerAwareInterface
+{
+    use EventManagerAwareTrait;
+
+    /**
+     * Force an id, if possible and use the original service to do its work
+     */
+    public function render(ElementInterface $element): string
+    {
+        // $manager = $this->getEventManager();
+        // $event = new RenderEvent(Events::PreRenderInput->value, $this);
+        // $event->setElement($element);
+        // $manager->triggerEvent($event);
+
+        // default rendering handles the input attributes
+        $markup = parent::render($element);
+        // reset event
+        // $event = new RenderEvent(Events::PostRenderInput->value, $this);
+        // $event->setAttributes($element->getAttributes())
+        //         ->setMarkup($markup);
+        // $manager->triggerEvent($event);
+        return $markup;
+    }
+}

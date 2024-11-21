@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace Limatus;
 
-use Laminas\Form\Element\Checkbox;
-use Laminas\Form\Element\Text;
-use Laminas\Form\ElementFactory;
-use Laminas\Form\View\Helper\Factory\FormElementErrorsFactory;
 use Laminas\Form\View\Helper\Form;
-use Laminas\Form\View\Helper\FormCheckbox as FormCheckboxHelper;
 use Laminas\Form\View\Helper\FormCollection;
 use Laminas\Form\View\Helper\FormElement;
 use Laminas\Form\View\Helper\FormElementErrors;
 use Laminas\Form\View\Helper\FormInput;
 use Laminas\Form\View\Helper\FormRow;
-use Laminas\Form\View\Helper\FormText;
-use Laminas\ServiceManager\Factory;
-use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\View\Helper\Navigation\Menu;
+use Limatus\Form\RenderListenerInterface;
 use Limatus\Form\Element;
 use Limatus\Form\View;
-use Limatus\View\Helper;
+use Limatus\Form\View\Helper;
+use Limatus\Form\View\Helper\FormCollectionDelegator;
+use Limatus\Vendor\Bootstrap\LayoutMode;
+use Limatus\View\Helper\HtmlTag;
+use Limatus\View\Helper\Service\HtmlTagFactory;
 
 class ConfigProvider
 {
@@ -37,57 +34,44 @@ class ConfigProvider
 
     public function getDependencyConfig(): array
     {
-        return [];
+        return [
+            'aliases'   => [
+                VendorInterface::class => Vendor\Bootstrap\Bootstrap::class,
+                RenderListenerInterface::class
+                    => Vendor\Bootstrap\Listener\RenderListener::class,
+            ],
+            'factories' => [
+                Element\Listener\ElementListener::class
+                    => Element\Listener\ElementListenerFactory::class,
+                Vendor\Bootstrap\Bootstrap::class => Vendor\Bootstrap\BootstrapFactory::class,
+                Vendor\Bootstrap\Listener\RenderListener::class
+                    => Vendor\Bootstrap\Listener\RenderListenerFactory::class,
+            ],
+        ];
     }
 
     /** only new components get aliases */
     public function getViewHelperConfig(): array
     {
         return [
-            'aliases'    => [
-                'formBootstrapElement'  => View\Helper\FormBootstrapElement::class,
-                'formGridCollection'    => View\Helper\FormGridCollection::class,
-                'formHelp'              => View\Helper\FormHelp::class,
-                'formHorizontalElement' => View\Helper\FormHorizontalElement::class,
-                'formCheckBox'          => View\Helper\FormCheckbox::class,
-                'modal'                 => Helper\Modal::class,
-            ],
             'factories'  => [
-                FormElementErrors::class                 => FormElementErrorsFactory::class,
-                View\Helper\Form::class                  => Factory\InvokableFactory::class,
-                View\Helper\FormCheckbox::class          => Factory\InvokableFactory::class,
-                View\Helper\FormCollection::class        => Factory\InvokableFactory::class,
-                View\Helper\FormElement::class           => Factory\InvokableFactory::class,
-                View\Helper\FormInput::class             => Factory\InvokableFactory::class,
-                View\Helper\FormRow::class               => Factory\InvokableFactory::class,
-                View\Helper\FormText::class              => Factory\InvokableFactory::class,
-                View\Helper\FormBootstrapElement::class  => Factory\InvokableFactory::class,
-                View\Helper\FormGridCollection::class    => Factory\InvokableFactory::class,
-                View\Helper\FormHelp::class              => Factory\InvokableFactory::class,
-                View\Helper\FormHorizontalElement::class => Factory\InvokableFactory::class,
-                Helper\Modal::class                      => Factory\InvokableFactory::class,
+                HtmlTag::class => HtmlTagFactory::class,
             ],
             'delegators' => [
                 Form::class               => [
-                    View\Delegator\Factory\FormFactory::class,
-                ],
-                FormCheckboxHelper::class => [
-                    View\Delegator\Factory\FormCheckboxFactory::class,
+                    Helper\FormDelegatorFactory::class,
                 ],
                 FormCollection::class     => [
-                    View\Delegator\Factory\FormCollectionFactory::class,
+                    Helper\FormCollectionDelegatorFactory::class,
                 ],
-                FormElement::class        => [
-                    View\Delegator\Factory\FormElementFactory::class,
-                ],
-                FormInput::class          => [
-                    View\Delegator\Factory\FormInputFactory::class,
-                ],
+                // FormInput::class          => [
+                //     Helper\FormInputDelegatorFactory::class,
+                // ],
+                // FormElement::class        => [
+                //     Helper\FormElementDelegatorFactory::class,
+                // ],
                 FormRow::class            => [
-                    View\Delegator\Factory\FormRowFactory::class,
-                ],
-                FormText::class           => [
-                    View\Delegator\Factory\FormTextFactory::class,
+                    Helper\FormRowDelegatorFactory::class,
                 ],
             ],
         ];
@@ -96,6 +80,14 @@ class ConfigProvider
     public function getHelperConfig(): array
     {
         return [
+            static::class => [
+                'form_layout_mode' => LayoutMode::Grid, // Override the default form layout
+                // set defaults. Values passed via $formHelper mutators will override these values.
+                'g'      => '',
+                'row'    => '',
+                'mb'     => '',
+                'col'    => '',
+            ],
             'form_element_errors' => [
                 'message_open_format'      => '<div%s><ul><li>',
                 'message_separator_string' => '</li><li>',
@@ -112,16 +104,16 @@ class ConfigProvider
         return [
             'aliases'    => [],
             'factories'  => [
-                Element\Checkbox::class => ElementFactory::class,
-                Element\Text::class     => ElementFactory::class,
+                // Element\Checkbox::class => ElementFactory::class,
+                // Element\Text::class     => ElementFactory::class,
             ],
             'delegators' => [
-                Checkbox::class => [
-                    Element\Delegator\Factory\CheckboxFactory::class,
-                ],
-                Text::class     => [
-                    Element\Delegator\Factory\TextFactory::class,
-                ],
+                // Checkbox::class => [
+                //     Element\Delegator\Factory\CheckboxFactory::class,
+                // ],
+                // Text::class     => [
+                //     Element\Delegator\Factory\TextFactory::class,
+                // ],
             ],
         ];
     }
@@ -129,15 +121,15 @@ class ConfigProvider
     public function getNavigationHelperConfig(): array
     {
         return [
-            'aliases'    => [],
-            'factories'  => [
-                Helper\Navigation\Menu::class => InvokableFactory::class,
-            ],
-            'delegators' => [
-                Menu::class => [
-                    Helper\Navigation\Delegator\Factory\MenuFactory::class,
-                ],
-            ],
+            // 'aliases'    => [],
+            // 'factories'  => [
+            //     Helper\Navigation\Menu::class => InvokableFactory::class,
+            // ],
+            // 'delegators' => [
+            //     Menu::class => [
+            //         Helper\Navigation\Delegator\Factory\MenuFactory::class,
+            //     ],
+            // ],
         ];
     }
 }

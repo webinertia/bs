@@ -51,7 +51,7 @@
         "phpstan/phpstan": "1.10.40",
         "laminas/laminas-test": "^4.8",
         "phpstan/extension-installer": "^1.2",
-        "slam/phpstan-laminas-framework": "^1.4"
+        "slam/phpstan-laminas-framework": "^2.0"
     },
     "extra": {
         "laminas": {

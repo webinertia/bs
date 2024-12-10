@@ -33,7 +33,7 @@
         "ext-intl": "*",
         "doctrine/annotations": "^2.0.0",
         "laminas/laminas-captcha": "^2.15",
-        "laminas/laminas-coding-standard": "^2.4",
+        "laminas/laminas-coding-standard": "^3.0",
         "laminas/laminas-db": "^2.16",
         "laminas/laminas-escaper": "^2.12",
         "laminas/laminas-eventmanager": "^3.8",

@@ -41,7 +41,7 @@
         "laminas/laminas-i18n": "^2.21",
         "laminas/laminas-modulemanager": "^2.14.0",
         "laminas/laminas-recaptcha": "^3.5",
-        "laminas/laminas-servicemanager": "^3.20",
+        "laminas/laminas-servicemanager": "^4.0",
         "laminas/laminas-session": "^2.16",
         "laminas/laminas-text": "^2.9.0",
         "laminas/laminas-validator": "^2.28",

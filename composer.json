@@ -48,7 +48,7 @@
         "laminas/laminas-view": "^2.25",
         "phpunit/phpunit": "10.4.2",
         "psalm/plugin-phpunit": "^0.18.4",
-        "phpstan/phpstan": "1.10.40",
+        "phpstan/phpstan": "2.1.8",
         "laminas/laminas-test": "^4.8",
         "phpstan/extension-installer": "^1.2",
         "slam/phpstan-laminas-framework": "^1.4"
